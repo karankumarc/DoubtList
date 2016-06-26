@@ -1,14 +1,17 @@
 package com.techpalle.karan.doubtlist.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,7 +29,7 @@ import com.techpalle.karan.doubtlist.utils.Constants;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class DoubtListMainActivity extends AppCompatActivity {
+public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler, AdapterView.OnItemClickListener {
 
     Firebase mBaseRef, mQuestionsRef;
     ListView listView;
@@ -41,6 +44,8 @@ public class DoubtListMainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
         arrayList = new ArrayList<String>();
+
+        listView.setOnItemClickListener(this);
 
         /*arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
@@ -58,11 +63,39 @@ public class DoubtListMainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                AddQuestionDialog questionDialog = new AddQuestionDialog();
+                questionDialog.show(getSupportFragmentManager(), "question_dialog");
             }
         });
     }
+
+    @Override
+    public void questionAdded(String question) {
+        mQuestionsRef.push().setValue(question);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.ic_question_black_24dp).setTitle("Delete question")
+                .setMessage("Are you sure you want to delete question?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i1) {
+                        Firebase firebase = adapter.getRef(i);
+                        firebase.removeValue();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
+    }
+
 
     @Override
     protected void onStart() {
@@ -150,4 +183,6 @@ public class DoubtListMainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
