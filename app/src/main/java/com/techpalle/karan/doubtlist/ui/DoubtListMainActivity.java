@@ -3,49 +3,53 @@ package com.techpalle.karan.doubtlist.ui;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
+import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.techpalle.karan.doubtlist.R;
 import com.techpalle.karan.doubtlist.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler, AdapterView.OnItemClickListener {
+public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler, AdapterView.OnItemClickListener{
 
     Firebase mBaseRef, mQuestionsRef;
     ListView listView;
     ArrayAdapter<String> arrayAdapter;
     ArrayList<String> arrayList;
     FirebaseListAdapter<String> adapter;
+    FirebaseRecyclerAdapter<String, MessageViewHolder> recyclerAdapter;
+
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doubt_list_main);
 
-        listView = (ListView) findViewById(R.id.listView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+
+
+        /*listView = (ListView) findViewById(R.id.listView);
         arrayList = new ArrayList<String>();
 
-        listView.setOnItemClickListener(this);
+        listView.setOnItemClickListener(this);*/
 
         /*arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
@@ -84,7 +88,7 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i1) {
-                        Firebase firebase = adapter.getRef(i);
+                        Firebase firebase = recyclerAdapter.getRef(i);
                         firebase.removeValue();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -149,7 +153,8 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
         });*/
         //endregion
 
-        adapter = new FirebaseListAdapter<String>(this,
+        //region FirebaseArrayAdapter
+        /*adapter = new FirebaseListAdapter<String>(this,
                 String.class,
                 android.R.layout.simple_list_item_1,
                 mQuestionsRef) {
@@ -159,8 +164,72 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
                 textView.setText(s);
             }
         };
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
+        //endregion
+
+        //region FirebaseRecyclerAdapter
+        recyclerAdapter = new FirebaseRecyclerAdapter<String, MessageViewHolder>(
+                String.class,
+                android.R.layout.two_line_list_item,
+                MessageViewHolder.class,
+                mQuestionsRef
+        ) {
+            @Override
+            protected void populateViewHolder(MessageViewHolder messageViewHolder, String s, final int i) {
+                messageViewHolder.textView.setText(s);
+                messageViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DoubtListMainActivity.this);
+                        builder.setIcon(R.drawable.ic_question_black_24dp).setTitle("Delete question")
+                                .setMessage("Are you sure you want to delete question?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i1) {
+                                        Firebase firebase = recyclerAdapter.getRef(i);
+                                        firebase.removeValue();
+                                    }
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                        builder.create().show();
+                    }
+                });
+            }
+        };
+
+        recyclerView.setAdapter(recyclerAdapter);
+        //endregion
+
     }
+
+    public void onItemDeleted(int pos){
+        Firebase firebase = recyclerAdapter.getRef(pos);
+        firebase.removeValue();
+    }
+
+
+    public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        View mView;
+        TextView textView;
+
+        public MessageViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            textView = (TextView) itemView.findViewById(android.R.id.text1);
+        }
+
+        @Override
+        public void onClick(View view) {
+           /* deleteQuestionAt(getAdapterPosition());*/
+            //DoubtListMainActivity.this.onItemDeleted(getAdapterPosition());
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
