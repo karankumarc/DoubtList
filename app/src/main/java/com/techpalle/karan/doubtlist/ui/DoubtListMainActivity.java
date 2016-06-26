@@ -1,4 +1,4 @@
-package com.techpalle.karan.doubtlist.ui.ui;
+package com.techpalle.karan.doubtlist.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
