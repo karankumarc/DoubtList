@@ -24,13 +24,13 @@ import com.techpalle.karan.doubtlist.utils.Constants;
 
 import java.util.ArrayList;
 
-public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler, AdapterView.OnItemClickListener{
+public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler{
 
-    Firebase mBaseRef, mQuestionsRef;
-    ListView listView;
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> arrayList;
-    FirebaseListAdapter<String> adapter;
+    Firebase mBaseRef;// mQuestionsRef;
+    //  ListView listView;
+    //  ArrayAdapter<String> arrayAdapter;
+    //  ArrayList<String> arrayList;
+    //  FirebaseListAdapter<String> adapter;
     FirebaseRecyclerAdapter<String, MessageViewHolder> recyclerAdapter;
 
     RecyclerView recyclerView;
@@ -58,7 +58,7 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
         //listView.setAdapter(arrayAdapter);
 
         mBaseRef = new Firebase(Constants.BASE_URL);
-        mQuestionsRef = new Firebase(Constants.QUESTIONS_URL);
+        //mQuestionsRef = new Firebase(Constants.QUESTIONS_URL);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,10 +77,19 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
 
     @Override
     public void questionAdded(String question) {
-        mQuestionsRef.push().setValue(question);
+        mBaseRef.child(Constants.QUESTIONS).push().setValue(question);
     }
 
-    @Override
+    //region implement OnItemClickListener in the class for ListView when used
+    /**
+     * Fired for OnItemClickListener in a list view but does not apply here as we are using
+     * a Recycler view instead
+     * @param adapterView
+     * @param view
+     * @param i
+     * @param l
+     */
+    /*@Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_question_black_24dp).setTitle("Delete question")
@@ -98,8 +107,8 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
             }
         });
         builder.create().show();
-    }
-
+    }*/
+    //endregion
 
     @Override
     protected void onStart() {
@@ -172,7 +181,7 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
                 String.class,
                 android.R.layout.two_line_list_item,
                 MessageViewHolder.class,
-                mQuestionsRef
+                mBaseRef.child(Constants.QUESTIONS)
         ) {
             @Override
             protected void populateViewHolder(MessageViewHolder messageViewHolder, String s, final int i) {
@@ -203,14 +212,7 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
 
         recyclerView.setAdapter(recyclerAdapter);
         //endregion
-
     }
-
-    public void onItemDeleted(int pos){
-        Firebase firebase = recyclerAdapter.getRef(pos);
-        firebase.removeValue();
-    }
-
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -229,7 +231,6 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
             //DoubtListMainActivity.this.onItemDeleted(getAdapterPosition());
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
