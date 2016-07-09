@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">DoubtList</string>
     <string name="action_settings">Settings</string>
+
+    <!-- List of Doubts Strings -->
+    <string name="created_by">Created by </string>
 </resources>
