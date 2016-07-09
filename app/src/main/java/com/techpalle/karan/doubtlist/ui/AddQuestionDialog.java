@@ -3,7 +3,6 @@ package com.techpalle.karan.doubtlist.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -28,7 +27,7 @@ public class AddQuestionDialog extends AppCompatDialogFragment {
 
         inflater = getActivity().getLayoutInflater();
 
-        view = inflater.inflate(R.layout.dialog_add_question, null);
+        view = inflater.inflate(R.layout.dialog_add_topic, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setView(view).setIcon(R.drawable.ic_question_black_24dp).setPositiveButton("Ask", new DialogInterface.OnClickListener() {

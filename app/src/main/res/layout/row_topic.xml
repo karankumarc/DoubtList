@@ -13,7 +13,7 @@
     android:paddingStart="@dimen/margin_small">
 
     <TextView
-        android:id="@+id/text_view_doubt"
+        android:id="@+id/text_view_topic"
         style="@style/ListItemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -22,7 +22,7 @@
         android:id="@+id/created_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_doubt"
+        android:layout_below="@+id/text_view_topic"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="2dp"
@@ -34,7 +34,7 @@
         android:id="@+id/text_view_created_by_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_doubt"
+        android:layout_below="@+id/text_view_topic"
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/created_by"
         android:layout_toRightOf="@+id/created_by"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/text_view_doubt"
+        android:layout_below="@+id/text_view_topic"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="2dp"

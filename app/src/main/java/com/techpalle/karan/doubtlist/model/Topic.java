@@ -9,36 +9,36 @@ import java.util.HashMap;
 /**
  * Created by ADMIN on 7/5/2016.
  */
-public class Doubt {
-    private String doubtTitle, doubtContent, owner;
+public class Topic {
+    private String topicTitle, topicDescription, owner;
     private HashMap<String, Object> timestampLastChanged;
 
-    public Doubt() {
+    public Topic() {
     }
 
-    public Doubt(String doubtTitle, String doubtContent, String owner) {
-        this.doubtTitle = doubtTitle;
-        this.doubtContent = doubtContent;
+    public Topic(String doubtTitle, String doubtContent, String owner) {
+        this.topicTitle = doubtTitle;
+        this.topicDescription = doubtContent;
         this.owner = owner;
         HashMap<String, Object> timestampLastChangedObj = new HashMap<String, Object>();
         timestampLastChangedObj.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
         this.timestampLastChanged = timestampLastChangedObj;
     }
 
-    public String getDoubtTitle() {
-        return doubtTitle;
+    public String getTopicTitle() {
+        return topicTitle;
     }
 
-    public void setDoubtTitle(String doubtTitle) {
-        this.doubtTitle = doubtTitle;
+    public void setTopicTitle(String topicTitle) {
+        this.topicTitle = topicTitle;
     }
 
-    public String getDoubtContent() {
-        return doubtContent;
+    public String getTopicDescription() {
+        return topicDescription;
     }
 
-    public void setDoubtContent(String doubtContent) {
-        this.doubtContent = doubtContent;
+    public void setTopicDescription(String topicDescription) {
+        this.topicDescription = topicDescription;
     }
 
     public String getOwner() {
