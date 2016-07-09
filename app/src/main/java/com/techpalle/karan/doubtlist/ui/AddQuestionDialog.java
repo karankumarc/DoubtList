@@ -37,7 +37,6 @@ public class AddQuestionDialog extends AppCompatDialogFragment {
                 //Toast.makeText(getActivity(), "Ask", Toast.LENGTH_SHORT).show();
                 EditText editTextQuestion = (EditText) view.findViewById(R.id.editTextAddQuestion);
                 handler.questionAdded(editTextQuestion.getText().toString());
-
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

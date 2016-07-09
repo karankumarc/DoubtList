@@ -3,6 +3,9 @@ package com.techpalle.karan.doubtlist.ui;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,34 +18,35 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.techpalle.karan.doubtlist.R;
+import com.techpalle.karan.doubtlist.model.Doubt;
 import com.techpalle.karan.doubtlist.utils.Constants;
 
 import java.util.ArrayList;
 
 public class DoubtListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler{
 
-    Firebase mBaseRef;// mQuestionsRef;
-    //  ListView listView;
-    //  ArrayAdapter<String> arrayAdapter;
-    //  ArrayList<String> arrayList;
-    //  FirebaseListAdapter<String> adapter;
+    /*Firebase mBaseRef;
     FirebaseRecyclerAdapter<String, MessageViewHolder> recyclerAdapter;
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doubt_list_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        FragmentManager fm = getSupportFragmentManager();
+        DoubtListFragment doubtListFragment = new DoubtListFragment();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.container_main, doubtListFragment).commit();
+
+        /*recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);*/
 
 
 
@@ -57,27 +61,29 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
 
         //listView.setAdapter(arrayAdapter);
 
-        mBaseRef = new Firebase(Constants.BASE_URL);
+        /*mBaseRef = new Firebase(Constants.BASE_URL);*/
         //mQuestionsRef = new Firebase(Constants.QUESTIONS_URL);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
                 AddQuestionDialog questionDialog = new AddQuestionDialog();
                 questionDialog.show(getSupportFragmentManager(), "question_dialog");
             }
-        });
+        });*/
     }
 
     @Override
     public void questionAdded(String question) {
-        mBaseRef.child(Constants.QUESTIONS).push().setValue(question);
+        /*mBaseRef.child(Constants.QUESTIONS).push().setValue(question);*/
+        DoubtListFragment doubtListFragment = (DoubtListFragment) getSupportFragmentManager().findFragmentById(R.id.container_main);
+        doubtListFragment.addDoubt(question);
     }
 
     //region implement OnItemClickListener in the class for ListView when used
@@ -177,7 +183,7 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
         //endregion
 
         //region FirebaseRecyclerAdapter
-        recyclerAdapter = new FirebaseRecyclerAdapter<String, MessageViewHolder>(
+        /*recyclerAdapter = new FirebaseRecyclerAdapter<String, MessageViewHolder>(
                 String.class,
                 android.R.layout.two_line_list_item,
                 MessageViewHolder.class,
@@ -210,11 +216,11 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
             }
         };
 
-        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setAdapter(recyclerAdapter);*/
         //endregion
     }
 
-    public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    /*public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         View mView;
         TextView textView;
@@ -227,10 +233,10 @@ public class DoubtListMainActivity extends AppCompatActivity implements AddQuest
 
         @Override
         public void onClick(View view) {
-           /* deleteQuestionAt(getAdapterPosition());*/
+            deleteQuestionAt(getAdapterPosition());
             //DoubtListMainActivity.this.onItemDeleted(getAdapterPosition());
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

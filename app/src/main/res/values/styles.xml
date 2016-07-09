@@ -1,11 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ListItemText">
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textSize">@dimen/list_item_text_size</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
