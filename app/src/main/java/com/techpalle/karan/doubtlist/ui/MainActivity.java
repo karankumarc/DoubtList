@@ -8,9 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.techpalle.karan.doubtlist.ui.topicLists.AddTopicDialog;
 import com.techpalle.karan.doubtlist.R;
+import com.techpalle.karan.doubtlist.ui.topicLists.TopicListFragment;
 
-public class TopicListMainActivity extends AppCompatActivity implements AddQuestionDialog.QuestionAddedHandler{
+public class MainActivity extends AppCompatActivity implements AddTopicDialog.QuestionAddedHandler {
 
     /*Firebase mBaseRef;
     FirebaseRecyclerAdapter<String, MessageViewHolder> recyclerAdapter;
@@ -20,35 +22,17 @@ public class TopicListMainActivity extends AppCompatActivity implements AddQuest
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doubt_list_main);
+        setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
         TopicListFragment topicListFragment = new TopicListFragment();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.container_main, topicListFragment).commit();
 
-        /*recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);*/
-
-
-
-        /*listView = (ListView) findViewById(R.id.listView);
-        arrayList = new ArrayList<String>();
-
-        listView.setOnItemClickListener(this);*/
-
-        /*arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                arrayList);*/
-
-        //listView.setAdapter(arrayAdapter);
-
-        /*mBaseRef = new Firebase(Constants.FIREBASE_URL_BASE);*/
-        //mQuestionsRef = new Firebase(Constants.FIREBASE_URL_QUESTIONS);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Topics");
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +40,7 @@ public class TopicListMainActivity extends AppCompatActivity implements AddQuest
             public void onClick(View view) {
                 *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*//*
-                AddQuestionDialog questionDialog = new AddQuestionDialog();
+                AddTopicDialog questionDialog = new AddTopicDialog();
                 questionDialog.show(getSupportFragmentManager(), "question_dialog");
             }
         });*/
@@ -178,7 +162,7 @@ public class TopicListMainActivity extends AppCompatActivity implements AddQuest
                 messageViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(TopicListMainActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setIcon(R.drawable.ic_question_black_24dp).setTitle("Delete question")
                                 .setMessage("Are you sure you want to delete question?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -217,7 +201,7 @@ public class TopicListMainActivity extends AppCompatActivity implements AddQuest
         @Override
         public void onClick(View view) {
             deleteQuestionAt(getAdapterPosition());
-            //TopicListMainActivity.this.onItemDeleted(getAdapterPosition());
+            //MainActivity.this.onItemDeleted(getAdapterPosition());
         }
     }*/
 

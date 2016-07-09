@@ -1,4 +1,4 @@
-package com.techpalle.karan.doubtlist.ui;
+package com.techpalle.karan.doubtlist.ui.topicLists;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.techpalle.karan.doubtlist.R;
 import com.techpalle.karan.doubtlist.model.Topic;
+import com.techpalle.karan.doubtlist.ui.topicLists.AddTopicDialog;
 import com.techpalle.karan.doubtlist.utils.Constants;
 import com.techpalle.karan.doubtlist.utils.RecyclerItemClickListener;
 import com.techpalle.karan.doubtlist.utils.Utils;
@@ -75,7 +76,7 @@ public class TopicListFragment extends Fragment {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                AddQuestionDialog questionDialog = new AddQuestionDialog();
+                AddTopicDialog questionDialog = new AddTopicDialog();
                 questionDialog.show(getFragmentManager(), "question_dialog");
             }
         });
