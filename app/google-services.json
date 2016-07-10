@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1069225264463",
+    "project_id": "firebase-doubtlist"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069225264463:android:ca714c6372cc9910",
+        "android_client_info": {
+          "package_name": "com.techpalle.karan.doubtlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069225264463-819lc2003lct3opp9hv0thb17khhbj1s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techpalle.karan.doubtlist",
+            "certificate_hash": "6AF57AEDAA3995CD7AC9C3B391C1262735502ECA"
+          }
+        },
+        {
+          "client_id": "1069225264463-fduotglsok14hf597gctf5dl5l5bfccf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKaykHYR7cAXWgwTWqbcI4UGqiL0d8Xac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

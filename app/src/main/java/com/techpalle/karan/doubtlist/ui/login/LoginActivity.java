@@ -178,7 +178,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             return;
         }
         mAuthProgressDialog.show();
-        mFirebaseRef.authWithPassword(email, password, new MyAuthResultHandler());
+        mFirebaseRef.authWithPassword(email, password, new MyAuthResultHandler("password"));
     }
 
     /**
@@ -187,7 +187,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
      */
     private class MyAuthResultHandler implements Firebase.AuthResultHandler {
 
-        public MyAuthResultHandler() {
+        private final String provider;
+
+        public MyAuthResultHandler(String provider) {
+            this.provider=provider;
         }
 
         /**
@@ -263,6 +266,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
      * @param token A Google OAuth access token returned from Google
      */
     private void loginWithGoogle(String token) {
+        mFirebaseRef.authWithOAuthToken("google", token, new MyAuthResultHandler("google"));
     }
 
     /**
