@@ -17,7 +17,6 @@ import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.techpalle.karan.doubtlist.R;
 import com.techpalle.karan.doubtlist.model.Topic;
-import com.techpalle.karan.doubtlist.ui.topicLists.AddTopicDialog;
 import com.techpalle.karan.doubtlist.utils.Constants;
 import com.techpalle.karan.doubtlist.utils.RecyclerItemClickListener;
 import com.techpalle.karan.doubtlist.utils.Utils;
@@ -68,7 +67,7 @@ public class TopicListFragment extends Fragment {
             }
         }));
 
-        mBaseRef = new Firebase(Constants.FIREBASE_URL_BASE);
+        mBaseRef = new Firebase(Constants.FIREBASE_URL);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_doubt);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +86,7 @@ public class TopicListFragment extends Fragment {
     public void addDoubt(String question){
         String owner = "Anonymous";
         Topic topic = new Topic(question, "Temp", owner);
-        mBaseRef.child(Constants.FIREBASE_NODE_TOPICS).push().setValue(topic);
+        mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS).push().setValue(topic);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class TopicListFragment extends Fragment {
                 Topic.class,
                 R.layout.row_topic,
                 MessageViewHolder.class,
-                mBaseRef.child(Constants.FIREBASE_NODE_TOPICS)
+                mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS)
         ) {
             @Override
             protected void populateViewHolder(MessageViewHolder messageViewHolder, Topic topic, int i) {

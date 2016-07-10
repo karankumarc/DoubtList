@@ -12,12 +12,12 @@ import com.techpalle.karan.doubtlist.ui.topicLists.AddTopicDialog;
 import com.techpalle.karan.doubtlist.R;
 import com.techpalle.karan.doubtlist.ui.topicLists.TopicListFragment;
 
-public class MainActivity extends AppCompatActivity implements AddTopicDialog.QuestionAddedHandler {
+public class MainActivity extends BaseActivity implements AddTopicDialog.QuestionAddedHandler {
 
     /*Firebase mBaseRef;
     FirebaseRecyclerAdapter<String, MessageViewHolder> recyclerAdapter;
 
-    RecyclerView recyclerView;*/
+    RecyclerItemClickListener recyclerView;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +33,11 @@ public class MainActivity extends AppCompatActivity implements AddTopicDialog.Qu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("My Topics");
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*//*
-                AddTopicDialog questionDialog = new AddTopicDialog();
-                questionDialog.show(getSupportFragmentManager(), "question_dialog");
-            }
-        });*/
     }
 
     @Override
     public void questionAdded(String question) {
-        /*mBaseRef.child(Constants.FIREBASE_NODE_TOPICS).push().setValue(question);*/
+        /*mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS).push().setValue(question);*/
         TopicListFragment topicListFragment = (TopicListFragment) getSupportFragmentManager().findFragmentById(R.id.container_main);
         topicListFragment.addDoubt(question);
     }
@@ -88,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AddTopicDialog.Qu
         super.onStart();
 
         //region Add value event listener
-       /* mBaseRef.child(Constants.FIREBASE_NODE_TOPICS).addValueEventListener(new ValueEventListener() {
+       /* mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, String> map = dataSnapshot.getValue(Map.class);
@@ -104,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements AddTopicDialog.Qu
         //endregion
 
         //region Add child event listener
-        /*mBaseRef.child(Constants.FIREBASE_NODE_TOPICS).addChildEventListener(new ChildEventListener() {
+        /*mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String s1=dataSnapshot.getValue(String.class);
@@ -154,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AddTopicDialog.Qu
                 String.class,
                 android.R.layout.two_line_list_item,
                 MessageViewHolder.class,
-                mBaseRef.child(Constants.FIREBASE_NODE_TOPICS)
+                mBaseRef.child(Constants.FIREBASE_LOCATION_TOPICS)
         ) {
             @Override
             protected void populateViewHolder(MessageViewHolder messageViewHolder, String s, final int i) {
@@ -187,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AddTopicDialog.Qu
         //endregion
     }
 
-    /*public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    /*public static class MessageViewHolder extends RecyclerItemClickListener.ViewHolder implements View.OnClickListener{
 
         View mView;
         TextView textView;

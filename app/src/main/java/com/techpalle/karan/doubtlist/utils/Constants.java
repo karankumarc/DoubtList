@@ -6,15 +6,26 @@ package com.techpalle.karan.doubtlist.utils;
 public class Constants {
 
 
-    //Node names
-    public static final String FIREBASE_NODE_TOPICS ="topics/";
-    public static final String FIREBASE_NODE_QUESTIONS = "questions/";
-
-    //Firebase URL's
-    public static final String FIREBASE_URL_BASE = "https://doubtlist.firebaseio.com/";
-    public static final String FIREBASE_URL_QUESTIONS = "https://doubtlist.firebaseio.com/"+ FIREBASE_NODE_QUESTIONS;
-
-    //Firebase properties
+    /**
+     * Constants for Firebase object properties
+     */
     public static final String FIREBASE_PROPERTY_TIMESTAMP = "timestamp";
+
+    /**
+     * Constants related to locations in Firebase, such as the name of the node
+     * where user lists are stored (ie "userLists")
+     */
+    public static final String FIREBASE_LOCATION_TOPICS ="topics";
+    public static final String FIREBASE_LOCATION_QUESTIONS = "questions";
+
+    /**
+     * Constants for Firebase URL
+     */
+    public static final String FIREBASE_URL = "https://doubtlist.firebaseio.com/";
+    public static final String FIREBASE_URL_QUESTIONS = FIREBASE_URL +"/"+FIREBASE_LOCATION_QUESTIONS;
+
+    /**
+     * Constants for bundles, extras and shared preferences keys
+     */
 
 }
