@@ -17,12 +17,14 @@ public class Constants {
      */
     public static final String FIREBASE_LOCATION_TOPICS ="topics";
     public static final String FIREBASE_LOCATION_QUESTIONS = "questions";
+    public static final String FIREBASE_LOCATION_USERS = "users";
 
     /**
      * Constants for Firebase URL
      */
     public static final String FIREBASE_URL = "https://doubtlist.firebaseio.com/";
     public static final String FIREBASE_URL_QUESTIONS = FIREBASE_URL +"/"+FIREBASE_LOCATION_QUESTIONS;
+    public static final String FIREBASE_URL_USERS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USERS;
 
     /**
      * Constants for bundles, extras and shared preferences keys

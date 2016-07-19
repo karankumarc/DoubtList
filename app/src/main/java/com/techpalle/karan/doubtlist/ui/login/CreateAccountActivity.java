@@ -3,6 +3,7 @@ package com.techpalle.karan.doubtlist.ui.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
+import com.firebase.client.ValueEventListener;
 import com.techpalle.karan.doubtlist.R;
+import com.techpalle.karan.doubtlist.model.User;
 import com.techpalle.karan.doubtlist.ui.BaseActivity;
 import com.techpalle.karan.doubtlist.utils.Constants;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -136,6 +142,8 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                 /* Dismiss the progress dialog */
                 mAuthProgressDialog.dismiss();
                 showToast("Successfully created");
+                String uid = (String) result.get("uid");
+                createUserInFirebaseHelper(uid);
                 finish();
             }
 
@@ -158,9 +166,35 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     /**
      * Creates a new user in Firebase from the Java POJO
      */
-    private void createUserInFirebaseHelper(final String encodedEmail) {
+    private void createUserInFirebaseHelper(String uid) {
+
+        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(uid);
+        /**
+         * See if there is already a user (for example, if they already logged in with an associated
+         * Google account.
+         */
+        userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                /* If there is no user, make one */
+                if (dataSnapshot.getValue() == null) {
+                 /* Set raw version of date to the ServerValue.TIMESTAMP value and save into dateCreatedMap */
+                    HashMap<String, Object> timestampJoined = new HashMap<>();
+                    timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+                    User newUser = new User(mUserName, mUserEmail, timestampJoined);
+                    userLocation.setValue(newUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d(LOG_TAG, "Error occurred: " + firebaseError.getMessage());
+            }
+        });
 
     }
+
 
     private boolean isEmailValid(String email) {
 
