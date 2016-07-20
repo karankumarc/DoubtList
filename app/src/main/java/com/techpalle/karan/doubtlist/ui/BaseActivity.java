@@ -21,6 +21,8 @@ import com.techpalle.karan.doubtlist.R;
 public abstract class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
+    protected String mEncodedEmail;
+    /* Client used to interact with Google APIs. */
     protected GoogleApiClient mGoogleApiClient;
 
     @Override

@@ -2,8 +2,10 @@ package com.techpalle.karan.doubtlist.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -15,8 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -29,11 +34,14 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.Scope;
 import com.techpalle.karan.doubtlist.R;
+import com.techpalle.karan.doubtlist.model.User;
 import com.techpalle.karan.doubtlist.ui.BaseActivity;
 import com.techpalle.karan.doubtlist.ui.MainActivity;
 import com.techpalle.karan.doubtlist.utils.Constants;
+import com.techpalle.karan.doubtlist.utils.Utils;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Represents Sign in screen and functionality of the app
@@ -201,6 +209,58 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         public void onAuthenticated(AuthData authData) {
             mAuthProgressDialog.dismiss();
             showToast("Login successful");
+            if (authData.getProvider().equals(Constants.GOOGLE_PROVIDER)) {
+                /**
+                 * If google api client is connected, get the lowerCase user email
+                 * and save in sharedPreferences
+                 */
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor spe = sp.edit();
+                String unprocessedEmail;
+                if (mGoogleApiClient.isConnected()) {
+                    unprocessedEmail = mGoogleAccount.getEmail().toLowerCase();
+                    spe.putString(Constants.KEY_GOOGLE_EMAIL, unprocessedEmail).apply();
+                } else {
+
+                    /**
+                     * Otherwise get email from sharedPreferences, use null as default value
+                     * (this mean that user resumes his session)
+                     */
+                    unprocessedEmail = sp.getString(Constants.KEY_GOOGLE_EMAIL, null);
+                }
+                /**
+                 * Encode user email replacing "." with "," to be able to use it
+                 * as a Firebase db key
+                 */
+                mEncodedEmail = Utils.encodeEmail(unprocessedEmail);
+
+
+                    /* Get username from authData */
+                final String userName = (String) authData.getProviderData().get(Constants.PROVIDER_DATA_DISPLAY_NAME);
+
+                    /* If no user exists, make a user */
+                final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
+                userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                            /* If nothing is there ...*/
+                        if (dataSnapshot.getValue() == null) {
+                            HashMap<String, Object> timestampJoined = new HashMap<>();
+                            timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+                            User newUser = new User(userName, mEncodedEmail, timestampJoined);
+                            userLocation.setValue(newUser);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        Log.d(LOG_TAG, "Error occurred: " + firebaseError.getMessage());
+                    }
+                });
+
+
+            }
             if (authData != null) {
                 /* Go to main activity */
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

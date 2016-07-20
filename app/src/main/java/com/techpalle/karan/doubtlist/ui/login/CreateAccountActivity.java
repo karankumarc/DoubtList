@@ -21,6 +21,7 @@ import com.techpalle.karan.doubtlist.R;
 import com.techpalle.karan.doubtlist.model.User;
 import com.techpalle.karan.doubtlist.ui.BaseActivity;
 import com.techpalle.karan.doubtlist.utils.Constants;
+import com.techpalle.karan.doubtlist.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,8 +143,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                 /* Dismiss the progress dialog */
                 mAuthProgressDialog.dismiss();
                 showToast("Successfully created");
-                String uid = (String) result.get("uid");
-                createUserInFirebaseHelper(uid);
+                createUserInFirebaseHelper();
                 finish();
             }
 
@@ -166,9 +166,10 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     /**
      * Creates a new user in Firebase from the Java POJO
      */
-    private void createUserInFirebaseHelper(String uid) {
+    private void createUserInFirebaseHelper() {
+        final String encodedEmail = Utils.encodeEmail(mUserEmail);
+        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail);
 
-        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(uid);
         /**
          * See if there is already a user (for example, if they already logged in with an associated
          * Google account.
@@ -182,7 +183,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                     HashMap<String, Object> timestampJoined = new HashMap<>();
                     timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-                    User newUser = new User(mUserName, mUserEmail, timestampJoined);
+                    User newUser = new User(mUserName, encodedEmail, timestampJoined);
                     userLocation.setValue(newUser);
                 }
             }

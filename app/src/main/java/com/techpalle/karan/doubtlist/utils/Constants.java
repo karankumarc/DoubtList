@@ -29,5 +29,12 @@ public class Constants {
     /**
      * Constants for bundles, extras and shared preferences keys
      */
+    public static final String KEY_GOOGLE_EMAIL = "GOOGLE_EMAIL";
 
+    /**
+     * Constants for Firebase login
+     */
+    public static final String PASSWORD_PROVIDER = "password";
+    public static final String GOOGLE_PROVIDER = "google";
+    public static final String PROVIDER_DATA_DISPLAY_NAME = "displayName";
 }
